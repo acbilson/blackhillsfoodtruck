@@ -1,0 +1,5 @@
+---
+project_name: blackhillsfoodtruck
+server_name: "{{ g_host }}"
+
+static_root: /srv/blackhillsfoodtruck.com

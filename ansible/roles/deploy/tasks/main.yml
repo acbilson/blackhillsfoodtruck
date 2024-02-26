@@ -1,0 +1,27 @@
+---
+- name: Create static volume directories
+  ansible.builtin.file:
+    path: '{{ static_root }}'
+    state: directory
+    owner: '{{ g_user }}'
+    mode: '0755'
+
+- name: Create a log directory
+  ansible.builtin.file:
+    path: '/var/log/nginx/{{ project_name }}'
+    state: directory
+    mode: '0755'
+
+- name: Add Nginx config
+  ansible.builtin.template:
+    src: nginx.conf
+    dest: '/etc/nginx/sites-available/{{ server_name }}.conf'
+    mode: '0644'
+  notify:
+    - Restart nginx
+
+- name: Enable proxy
+  ansible.builtin.file:
+    src: '/etc/nginx/sites-available/{{ server_name }}.conf'
+    dest: '/etc/nginx/sites-enabled/{{ server_name }}.conf'
+    state: link
